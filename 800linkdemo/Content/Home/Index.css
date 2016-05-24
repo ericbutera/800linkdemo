@@ -1,0 +1,13 @@
+﻿/* this will go away when i move to using bootstrap table with panel */
+table thead th.phone-header { 
+    width: 150px;
+}
+
+div.filter-button { 
+    float: right;
+    clear: left;
+    vertical-align: middle;
+    /*padding: 5px 7px 0 0;*/
+}
+a.filter-button {
+}

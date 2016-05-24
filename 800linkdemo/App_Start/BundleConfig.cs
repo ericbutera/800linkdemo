@@ -29,6 +29,7 @@ namespace _800linkdemo
 
             bundles.Add(new ScriptBundle("~/bundles/knockout").Include("~/Scripts/knockout-3.4.0.js"));
             bundles.Add(new ScriptBundle("~/bundles/moment").Include("~/Scripts/moment.js"));
+            bundles.Add(new ScriptBundle("~/bundles/800linkdemo").Include("~/Scripts/800linkdemo.js"));
         }
     }
 }

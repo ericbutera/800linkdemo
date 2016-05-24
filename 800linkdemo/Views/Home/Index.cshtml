@@ -2,13 +2,58 @@
     ViewBag.Title = "Calls List";
 }
 
-<div id="calls-list">
+<div id="call-filters">
 
-    <!-- todo: use a bootstrap grid here instead of these inline styles -->
-    <table>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
+                    @*<span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>*@
+                </button>
+                <a class="navbar-brand" href="@Url.Action("Index", "Home")">Call List</a>
+            </div>
+
+            <div class="collapse navbar-collapse" id="navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="@Url.Action("Index", "Home")">Call List <span class="sr-only">(current)</span></a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="javascript:void(null);" data-bind="click: toggleSearch">Filters</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="panel panel-default" data-bind="visible: showFilters">
+        <div class="panel-heading">Call List Filters</div>
+        <div class="panel-body">
+            <form id="filter-form" data-bind="submit: searchCallList @* , event: { change: searchCallList } *@">
+                <div id="filters" class="input-group">
+                    <label for="filter-phone-number"></label>
+                    <input type="tel" id="filter-phone-number" placeholder="Phone Number" data-bind="textInput: currentFilter().phoneNumber"/>
+                </div>
+                <div id="filters" class="input-group">
+                    <label for="filter-duration"></label>
+                    <input type="tel" id="filter-duration" placeholder="Duration" data-bind="textInput: currentFilter().duration"/>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--  data-bind="stopBinding: true" -->
+<div id="call-list" @*data-bind="allowBindings: true"*@>
+    @*
+        todo: use a bootstrap grid here instead of these inline styles 
+        https://getbootstrap.com/examples/grid/
+    *@
+    <table id="call-list">
     <thead>
         <tr>
-            <th style="width: 150px">Number</th>
+            <th class="phone-header">Number</th>
             <th>Duration</th>
         </tr>
     </thead>
@@ -19,32 +64,9 @@
         </tr>
     </tbody>
     </table>
-
 </div>
 
-<!-- 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-    </div>
-</div>
--->
 
 @Scripts.Render("~/Scripts/Home/Index.js")
+@Styles.Render("~/Content/Home/Index.css")
 
