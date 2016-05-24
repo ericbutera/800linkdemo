@@ -7,3 +7,14 @@ ko.bindingHandlers.allowBindings = {
         return { controlsDescendantBindings: !shouldAllowBindings };
     }
 };
+
+
+// setup global jquery ajax settings
+(function ($) {
+    $.ajaxSetup({
+        contentType: 'application/json',
+        error: function (jqXHR, status, errorThrown) {
+            alert('There was an error with the request: ' + settings.url);
+        }
+    });
+})(jQuery);

@@ -18,16 +18,33 @@
     ko.applyBindings(CallFiltersViewModel, document.getElementById('call-filters'));
 
 
+    // mock data for calls list 
+    // TODO: move to WebApi
+    var calls = [
+        { duration: 900, number: "(231) 555-5555" },
+        { duration: 600, number: "(231) 555-5556" },
+        { duration: 300, number: "(231) 555-5557" }
+    ];
+
     // powers the calls list grid
-    var CallListViewModel = {
+    var CallsListViewModel = {
         callsList: ko.observableArray([]),
-        fetchData: function() {
-            // mock data for calls list
-            var calls = [
-                { duration: 900, number: "(231) 555-5555" },
-                { duration: 600, number: "(231) 555-5556" },
-                { duration: 300, number: "(231) 555-5557" }
-            ];
+        fetchData: function(currentFilter) {
+            currentFilter = currentFilter || {};
+            
+            /*
+            $.get('/api/calls/list')
+            .success(function (data, status) {
+                debugger;
+                if (!data || data.error) {
+                    return false;
+                }
+
+                // CallsListViewModel.callsList(data); // use this when webapi implemented
+            });
+            */
+
+            CallsListViewModel.callsList(calls); // for now use mocked data
         },
         formatDuration: function (seconds) {
             // use moment.js to format seconds into something more pretty
@@ -35,7 +52,7 @@
             return moment.utc(ms).format("HH [hours] mm [minutes] ss [seconds]");
         },
     };
-    CallListViewModel.fetchData(CallFiltersViewModel.currentFilter());
-    ko.applyBindings(CallListViewModel, document.getElementById('call-list'));
+    ko.applyBindings(CallsListViewModel, document.getElementById('calls-list'));
+    CallsListViewModel.fetchData(CallFiltersViewModel.currentFilter());
 
 });
