@@ -17,4 +17,9 @@ ko.bindingHandlers.allowBindings = {
             alert('There was an error with the request: ' + settings.url);
         }
     });
+
+    $(function () {
+        $(":input").inputmask();
+    });
+
 })(jQuery);
