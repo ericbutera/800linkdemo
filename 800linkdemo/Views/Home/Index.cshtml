@@ -2,6 +2,26 @@
     ViewBag.Title = "Calls List";
 }
 
+<div id="calls-list">
+
+    <!-- todo: use a bootstrap grid here instead of these inline styles -->
+    <table>
+    <thead>
+        <tr>
+            <th style="width: 150px">Number</th>
+            <th>Duration</th>
+        </tr>
+    </thead>
+    <tbody data-bind="foreach: callsList">
+        <tr>
+            <td data-bind="text: $data.number"></td>
+            <td data-bind="text: $root.formatDuration($data.duration)"></td>
+        </tr>
+    </tbody>
+    </table>
+
+</div>
+
 <!-- 
 <div class="row">
     <div class="col-md-4">
@@ -25,3 +45,6 @@
     </div>
 </div>
 -->
+
+@Scripts.Render("~/Scripts/Home/Index.js")
+
