@@ -19,7 +19,7 @@ ko.bindingHandlers.allowBindings = {
     });
 
     $(function () {
-        $(":input").inputmask();
+        $(':input').inputmask();
     });
 
 })(jQuery);

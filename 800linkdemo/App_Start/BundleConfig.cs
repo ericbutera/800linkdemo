@@ -29,13 +29,15 @@ namespace _800linkdemo
 
             bundles.Add(new ScriptBundle("~/bundles/knockout").Include("~/Scripts/knockout-3.4.0.js"));
             bundles.Add(new ScriptBundle("~/bundles/moment").Include("~/Scripts/moment.js"));
+            bundles.Add(new ScriptBundle("~/bundles/debounce").Include("~/Scripts/jquery.ba-throttle-debounce.js"));
             bundles.Add(new ScriptBundle("~/bundles/inputmask").Include(
                         "~/Scripts/jquery.inputmask/inputmask.js",
                         "~/Scripts/jquery.inputmask/jquery.inputmask.js",
-                        "~/Scripts/jquery.inputmask/inputmask.extensions.js",
-                        "~/Scripts/jquery.inputmask/inputmask.date.extensions.js",
-                        "~/Scripts/jquery.inputmask/inputmask.phone.extensions.js",
-                        "~/Scripts/jquery.inputmask/inputmask.numeric.extensions.js"));
+                        "~/Scripts/jquery.inputmask/inputmask.extensions.js")
+                        //"~/Scripts/jquery.inputmask/inputmask.date.extensions.js",
+                        //"~/Scripts/jquery.inputmask/inputmask.phone.extensions.js",
+                        //"~/Scripts/jquery.inputmask/inputmask.numeric.extensions.js"),
+                        );
 
             bundles.Add(new ScriptBundle("~/bundles/800linkdemo").Include("~/Scripts/800linkdemo.js"));
         }

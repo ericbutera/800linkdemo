@@ -28,23 +28,26 @@
     <div class="panel panel-default" data-bind="visible: showFilters">
         <div class="panel-heading">Call List Filters</div>
         <div class="panel-body">
-            <form id="filter-form" class="form-horizontal" data-bind="submit: searchCallList @* , event: { change: searchCallList } *@">
+            <form id="filter-form" class="form-horizontal" data-bind="submit: searchCallList, event: { change: searchCallList }">
                 <div class="form-group">
-                    <label for="filter-phone-number" class="col-sm-2 control-label">Phone Number</label>
-                    <input id="filter-phone-number" type="tel" class="form-control" placeholder="Phone Number" data-inputmask="'mask': '(999) 999-9999'" data-bind="textInput: currentFilter().phoneNumber"/>
+                    <label for="filter-caller-number" class="col-sm-2 control-label">Caller Number</label>
+                    <input id="filter-caller-number" type="tel" class="form-control" placeholder="Caller Number" title="Caller Number" data-inputmask="'mask': '(999) 999-9999'" data-bind="textInput: currentFilter().callerNumber"/>
                 </div>
                 <div class="form-group">
-                    <label for="filter-phone-ext" class="col-sm-2 control-label">Extension</label>
-                    <input id="filter-phone-ext" class="form-control" type="number" placeholder="Extension" data-bind="textInput: currentFilter().phoneExt"/>
+                    <label for="filter-caller-ext" class="col-sm-2 control-label">Extension</label>
+                    <input id="filter-caller-ext" class="form-control" type="number" placeholder="Extension" title="Extension" data-bind="textInput: currentFilter().callerExt"/>
                 </div>
                 <div class="form-group">
-                    @* possibly add a dropdown to say duration in seconds/minutes/hours *@
+                    @* 
+                    1) possibly add a dropdown to say duration in seconds/minutes/hours 
+                    2) possibly add another dropdown that has the options Less Than & Greater Than
+                    *@
                     <label for="filter-duration" class="col-sm-2 control-label">Call Duration (in minutes)</label>
-                    <input type="number" id="filter-duration" class="form-control" placeholder="Duration" data-bind="textInput: currentFilter().callDuration"/>
+                    <input type="number" id="filter-duration" class="form-control" placeholder="Duration" title="Find call records that have at least this many minutes" data-bind="textInput: currentFilter().callDuration"/>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="btn btn-default">Search</button>
+                        <button type="submit" class="btn btn-primary">Search</button>
                     </div>
                 </div>
             </form>
@@ -60,7 +63,7 @@
     <table id="call-list-grid" class="table table-striped">
     <thead>
         <tr>
-            <th class="phone-header">Number</th>
+            <th class="caller-header">Number</th>
             <th>Duration</th>
         </tr>
     </thead>

@@ -152,6 +152,8 @@
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.ba-throttle-debounce.js" />
+    <Content Include="Scripts\jquery.ba-throttle-debounce.min.js" />
     <Content Include="Scripts\jquery.inputmask\inputmask.date.extensions.js" />
     <Content Include="Scripts\jquery.inputmask\inputmask.extensions.js" />
     <Content Include="Scripts\jquery.inputmask\inputmask.js" />
