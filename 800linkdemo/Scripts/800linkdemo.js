@@ -1,4 +1,14 @@
-﻿// http://knockoutjs.com/documentation/custom-bindings-controlling-descendant-bindings.html
+﻿// global utility functions
+_800LinkDemo = {
+    displayError: function (errorMessage) {
+        // todo make this a modal
+        alert(errorMessage);
+    }
+};
+
+
+// custom knockout bindings
+// http://knockoutjs.com/documentation/custom-bindings-controlling-descendant-bindings.html
 // in case i want to nest view models
 ko.bindingHandlers.allowBindings = {
     init: function (elem, valueAccessor) {
@@ -14,7 +24,7 @@ ko.bindingHandlers.allowBindings = {
     $.ajaxSetup({
         contentType: 'application/json',
         error: function (jqXHR, status, errorThrown) {
-            alert('There was an error with the request: ' + settings.url);
+            _800LinkDemo.displayError('There was an error with the request: ' + settings.url);
         }
     });
 

@@ -1,29 +1,54 @@
 ﻿$(function () {
-
     // powers the filter search
     var CallFiltersViewModel = {
         showFilters: ko.observable(false),
         currentFilter: ko.observable({}), // represents the current filter input values
+        //TODO  isSearchDisabled: ko.observable(false),
         toggleSearch: function () {
             var currentState = this.showFilters();
             this.showFilters(~currentState);
         },
+        validate: function(filter) {
+            // validate dates are in order
+            if (filter.dateAfter && filter.dateBefore) {
+                var dateAfter = moment(filter.dateAfter).toDate()
+                    , dateBefore = moment(filter.DateBefore).toDate();
+
+                if (dateAfter && dateBefore) {
+                    if (dateAfter > dateBefore) {
+                        _800LinkDemo.displayError('Calls Date After must be less than the value of Calls Date Before.');
+                        return false;
+                    }
+                }
+            }
+            return true;
+        },
         searchCallList: function () {
-            console.log(arguments);
-            console.log('filter %o', ko.toJSON(CallFiltersViewModel.currentFilter()));
-            debugger;
-            // CallFiltersViewModel.fetchData(CallFiltersViewModel.currentFilter());
+            var filter = CallFiltersViewModel.currentFilter();
+
+            if (filter.callerNumber) {
+                // remove data mask - TODO there has to be a better way to handle this mask
+                filter.callerNumber = filter.callerNumber.replace(/\D/g, '');
+            }
+
+            var allowSearch = CallFiltersViewModel.validate(filter);
+            // TODO CallFiltersViewModel.isSearchDisabled(!allowSearch);
+            if (allowSearch) {
+                CallsListViewModel.fetchData(filter);
+            }
         }
     };
     ko.applyBindings(CallFiltersViewModel, document.getElementById('call-filters'));
+    window.CallFiltersViewModel = CallFiltersViewModel;
 
 
     // mock data for calls list 
     // TODO: move to WebApi
     var calls = [
-        { duration: 900, number: '(231) 555-5555', extension: '123' },
-        { duration: 600, number: '(231) 555-5556' },
-        { duration: 300, number: '(231) 555-5557', extension: '3476' }
+        { duration: 987, number: '(231) 555-5555', extension: '123', 'dateCalled': new Date('2016/05/23 08:15:22') },
+        { duration: 654, number: '(231) 555-5556', extension: '', 'dateCalled': new Date('2016/05/23 13:32:12') },
+        { duration: 321, number: '(231) 555-5557', extension: '3476', 'dateCalled': new Date('2016/05/24 10:49:31') },
+        { duration: 210, number: '(231) 555-5558', extension: '', 'dateCalled': new Date('2016/05/24 15:01:05') }
     ];
 
     // powers the calls list grid
@@ -52,6 +77,9 @@
             var ms = $.isNumeric(seconds) ? parseInt(seconds, 10) * 1000 : 0;
             return moment.utc(ms).format('HH [hours] mm [minutes] ss [seconds]');
         },
+        formatDateTime: function (callDate) {
+            return callDate ? moment.utc(callDate).format('MM/DD/YYYY hh:mm:ss a') : '';
+        }
     };
     ko.applyBindings(CallsListViewModel, document.getElementById('calls-list'));
     CallsListViewModel.fetchData(CallFiltersViewModel.currentFilter());

@@ -28,26 +28,41 @@
     <div class="panel panel-default" data-bind="visible: showFilters">
         <div class="panel-heading">Call List Filters</div>
         <div class="panel-body">
-            <form id="filter-form" class="form-horizontal" data-bind="submit: searchCallList, event: { change: searchCallList }">
-                <div class="form-group">
+            @* 
+            revisit this after i get currentFilter able to remove the mask in a better way
+            , event: { change: searchCallList, blur: searchCallList }
+            *@
+            <form id="filter-form" class="form-horizontal" data-bind="submit: searchCallList">
+                @*<div class="row">
+                    <div class="col-sm-12" data-bind="with: errors, text:errors">< /div>
+                </div>*@
+                <div class="row">
                     <label for="filter-caller-number" class="col-sm-2 control-label">Caller Number</label>
                     <input id="filter-caller-number" type="tel" class="form-control" placeholder="Caller Number" title="Caller Number" data-inputmask="'mask': '(999) 999-9999'" data-bind="textInput: currentFilter().callerNumber"/>
                 </div>
-                <div class="form-group">
+                <div class="row">
                     <label for="filter-caller-ext" class="col-sm-2 control-label">Extension</label>
                     <input id="filter-caller-ext" class="form-control" type="number" placeholder="Extension" title="Extension" data-bind="textInput: currentFilter().callerExt"/>
                 </div>
-                <div class="form-group">
+                <div class="row">
                     @* 
                     1) possibly add a dropdown to say duration in seconds/minutes/hours 
                     2) possibly add another dropdown that has the options Less Than & Greater Than
                     *@
-                    <label for="filter-duration" class="col-sm-2 control-label">Call Duration (in minutes)</label>
-                    <input type="number" id="filter-duration" class="form-control" placeholder="Duration" title="Find call records that have at least this many minutes" data-bind="textInput: currentFilter().callDuration"/>
+                    <label for="filter-duration" class="col-sm-2 control-label">Call Duration</label>
+                    <input type="number" id="filter-duration" class="form-control" placeholder="Duration in minutes" title="Find call records that have at least this many minutes" data-bind="textInput: currentFilter().callDuration" />
                 </div>
-                <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="btn btn-primary">Search</button>
+                <div class="row">
+                    <div class="col-sm-2 control-label"><strong>Date Range</strong></div>
+                    <label for="filter-date-after" class="col-sm-2 control-label">Calls After Date</label>
+                    <div class="col-sm-3"><input type="date" id="filter-date-after" class="form-control control" title="Find call records after on or after this date" data-bind="value: currentFilter().dateAfter" /></div>
+
+                    <label for="filter-date-before" class="col-sm-2 control-label">Calls Before Date</label>
+                    <div class="col-sm-3"><input type="date" id="filter-date-before" class="form-control control" title="Find call records before on or before this date" data-bind="value: currentFilter().dateBefore" /></div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-offset-10 col-sm-2 text-right">
+                        <button type="submit" class="btn btn-xs btn-primary text-right" data-bind="disable: isSearchDisabled">Search</button>
                     </div>
                 </div>
             </form>
@@ -64,13 +79,15 @@
     <thead>
         <tr>
             <th class="caller-header">Number</th>
-            <th>Duration</th>
+            <th class="text-center">Duration</th>
+            <th>Date Called</th>
         </tr>
     </thead>
     <tbody data-bind="foreach: callsList">
         <tr>
             <td data-bind="text: $data.number"></td>
             <td data-bind="text: $root.formatDuration($data.duration)"></td>
+            <td data-bind="text: $root.formatDateTime($data.dateCalled)"></td>
         </tr>
     </tbody>
     </table>

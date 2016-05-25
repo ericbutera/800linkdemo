@@ -9,5 +9,7 @@ div.filter-button {
     vertical-align: middle;
     /*padding: 5px 7px 0 0;*/
 }
-a.filter-button {
+
+#filter-form .row {
+    margin-bottom: 15px;
 }
