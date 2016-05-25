@@ -3,7 +3,7 @@
     var CallFiltersViewModel = {
         showFilters: ko.observable(false),
         currentFilter: ko.observable({}), // represents the current filter input values
-        //TODO  isSearchDisabled: ko.observable(false),
+        //TODO #11 isSearchDisabled: ko.observable(false),
         toggleSearch: function () {
             var currentState = this.showFilters();
             this.showFilters(~currentState);
@@ -32,7 +32,7 @@
             }
 
             var allowSearch = CallFiltersViewModel.validate(filter);
-            // TODO CallFiltersViewModel.isSearchDisabled(!allowSearch);
+            // TODO #11 CallFiltersViewModel.isSearchDisabled(!allowSearch);
             if (allowSearch) {
                 CallsListViewModel.fetchData(filter);
             }

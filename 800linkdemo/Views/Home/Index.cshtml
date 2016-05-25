@@ -53,16 +53,16 @@
                     <input type="number" id="filter-duration" class="form-control" placeholder="Duration in minutes" title="Find call records that have at least this many minutes" data-bind="textInput: currentFilter().callDuration" />
                 </div>
                 <div class="row">
-                    <div class="col-sm-2 control-label"><strong>Date Range</strong></div>
-                    <label for="filter-date-after" class="col-sm-2 control-label">Calls After Date</label>
+                    <div class="col-sm-2 control-label"><strong>Call Date Range</strong></div>
+                    <label for="filter-date-after" class="col-sm-2 control-label">After</label>
                     <div class="col-sm-3"><input type="date" id="filter-date-after" class="form-control control" title="Find call records after on or after this date" data-bind="value: currentFilter().dateAfter" /></div>
 
-                    <label for="filter-date-before" class="col-sm-2 control-label">Calls Before Date</label>
+                    <label for="filter-date-before" class="col-sm-2 control-label">Before</label>
                     <div class="col-sm-3"><input type="date" id="filter-date-before" class="form-control control" title="Find call records before on or before this date" data-bind="value: currentFilter().dateBefore" /></div>
                 </div>
                 <div class="row">
                     <div class="col-sm-offset-10 col-sm-2 text-right">
-                        <button type="submit" class="btn btn-xs btn-primary text-right" data-bind="disable: isSearchDisabled">Search</button>
+                        <button type="submit" class="btn btn-xs btn-primary text-right" @* TODO #11 data-bind="disable: isSearchDisabled"*@>Search</button>
                     </div>
                 </div>
             </form>
@@ -79,7 +79,7 @@
     <thead>
         <tr>
             <th class="caller-header">Number</th>
-            <th class="text-center">Duration</th>
+            <th>Duration</th>
             <th>Date Called</th>
         </tr>
     </thead>
