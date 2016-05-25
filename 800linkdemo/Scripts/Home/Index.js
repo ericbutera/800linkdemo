@@ -39,7 +39,6 @@
         }
     };
     ko.applyBindings(CallFiltersViewModel, document.getElementById('call-filters'));
-    window.CallFiltersViewModel = CallFiltersViewModel;
 
 
     // mock data for calls list 
@@ -52,8 +51,9 @@
     ];
 
     // powers the calls list grid
+    // might be time to turn this into a function so i can mess with the prototype instead of the hasCalls stuff below
     var CallsListViewModel = {
-        callsList: ko.observableArray([]),
+        callsList: ko.observableArray([]), 
         fetchData: $.debounce(250, function(currentFilter) {
             console.log('fetchData called with filter %o', ko.toJSON(currentFilter));
             currentFilter = currentFilter || {};
@@ -81,6 +81,13 @@
             return callDate ? moment.utc(callDate).format('MM/DD/YYYY hh:mm:ss a') : '';
         }
     };
+    CallsListViewModel.hasCalls = ko.computed(function () {
+        return CallsListViewModel.callsList().length;
+    });
+    CallsListViewModel.noCalls = ko.computed(function () {
+        return !CallsListViewModel.callsList().length;
+    });
+
     ko.applyBindings(CallsListViewModel, document.getElementById('calls-list'));
     CallsListViewModel.fetchData(CallFiltersViewModel.currentFilter());
 
