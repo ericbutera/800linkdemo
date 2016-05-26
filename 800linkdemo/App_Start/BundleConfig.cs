@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using System.Web.Optimization;
 
-namespace _800linkdemo
+namespace CallDemo
 {
     public class BundleConfig
     {

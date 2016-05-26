@@ -7,7 +7,7 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 
-namespace _800linkdemo
+namespace CallDemo
 {
     public class MvcApplication : System.Web.HttpApplication
     {

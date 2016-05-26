@@ -16,7 +16,7 @@
 
                 if (dateAfter && dateBefore) {
                     if (dateAfter > dateBefore) {
-                        _800LinkDemo.displayError('Calls Date After must be less than the value of Calls Date Before.');
+                        CallDemo.displayError('Calls Date After must be less than the value of Calls Date Before.');
                         return false;
                     }
                 }

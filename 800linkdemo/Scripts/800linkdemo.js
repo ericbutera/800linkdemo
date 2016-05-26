@@ -1,5 +1,5 @@
 ﻿// global utility functions
-_800LinkDemo = {
+CallDemo = {
     displayError: function (errorMessage) {
         // todo make this a modal
         alert(errorMessage);
@@ -24,7 +24,7 @@ ko.bindingHandlers.allowBindings = {
     $.ajaxSetup({
         contentType: 'application/json',
         error: function (jqXHR, status, errorThrown) {
-            _800LinkDemo.displayError('There was an error with the request: ' + settings.url);
+            CallDemo.displayError('There was an error with the request: ' + settings.url);
         }
     });
 
