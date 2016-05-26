@@ -5,12 +5,12 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using CallDemo.Models;
 using CallDemo.DataLayer;
+using CallDemo.Classes;
 
 namespace CallDemo.Controllers
 {
@@ -19,8 +19,18 @@ namespace CallDemo.Controllers
         private CallDemoContext db = new CallDemoContext();
 
         // GET: api/Calls
+        // TODO [SimulateRandomServerError]
         public IQueryable<CallLog> GetCalls()
         {
+            // simulate random server error
+            var error = DateTime.Now.Second % 3 == 0 ? true : false;
+            if (error)
+            {
+                var random = new Random();
+                var errors = new string[] { "Unable to connecto to server", "Invalid response from server" };
+                throw new Exception((string)errors[random.Next(errors.Length)]);
+            }
+
             return db.Calls;
         }
 

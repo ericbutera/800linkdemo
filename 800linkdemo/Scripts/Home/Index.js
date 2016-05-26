@@ -9,6 +9,12 @@
             this.showFilters(~currentState);
         },
         validate: function(filter) {
+            // will return filter object if valid, else bool false
+            // remove data mask - TODO there has to be a better way to handle this mask
+            if (filter.callerNumber) {
+                filter.callerNumber = filter.callerNumber.replace(/\D/g, '');
+            }
+
             // validate dates are in order
             if (filter.dateAfter && filter.dateBefore) {
                 var dateAfter = moment(filter.dateAfter).toDate()
@@ -16,22 +22,18 @@
 
                 if (dateAfter && dateBefore) {
                     if (dateAfter > dateBefore) {
-                        CallDemo.displayError('Calls Date After must be less than the value of Calls Date Before.');
+                        CallDemo.Errors.add('Calls Date After must be less than the value of Calls Date Before.')
                         return false;
                     }
                 }
             }
-            return true;
+
+            return filter;
         },
         searchCallList: function () {
-            var filter = CallFiltersViewModel.currentFilter();
+            var filter = CallFiltersViewModel.currentFilter()
+                , allowSearch = CallFiltersViewModel.validate(filter);
 
-            if (filter.callerNumber) {
-                // remove data mask - TODO there has to be a better way to handle this mask
-                filter.callerNumber = filter.callerNumber.replace(/\D/g, '');
-            }
-
-            var allowSearch = CallFiltersViewModel.validate(filter);
             // TODO #11 CallFiltersViewModel.isSearchDisabled(!allowSearch);
             if (allowSearch) {
                 CallsListViewModel.fetchData(filter);
@@ -45,7 +47,6 @@
     var CallsListViewModel = {
         callsList: ko.observableArray([]), 
         fetchData: $.debounce(250, function(currentFilter) {
-            console.log('fetchData called with filter %o', ko.toJSON(currentFilter));
             currentFilter = currentFilter || {};
             
             $.get('/api/Calls')
@@ -57,6 +58,14 @@
                 CallsListViewModel.callsList(data); // use this when webapi implemented
             });
         }),
+        refresh: function() {
+            var filter = CallFiltersViewModel.currentFilter();
+            filter = CallFiltersViewModel.validate(filter);
+            if (filter) {
+                CallsListViewModel.fetchData(filter);
+            }
+            return false;
+        },
         formatDuration: function (seconds) {
             // use moment.js to format seconds into something more pretty
             var ms = $.isNumeric(seconds) ? parseInt(seconds, 10) * 1000 : 0;
@@ -79,4 +88,11 @@
     ko.applyBindings(CallsListViewModel, document.getElementById('calls-list'));
     CallsListViewModel.fetchData(CallFiltersViewModel.currentFilter());
 
+    // using exports is better, but this is sufficient for a demo
+    // i put this here because i like to prototype with the console. in other single page apps the js router 
+    // can take care of clearing out the viewmodels so that the memory footprint doesn't get too large
+    CallDemo.ViewModels = {
+        CallsFiltersViewModel: CallFiltersViewModel,
+        CallsListViewModel: CallsListViewModel 
+    };
 });

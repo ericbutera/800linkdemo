@@ -39,7 +39,7 @@ namespace CallDemo
                         //"~/Scripts/jquery.inputmask/inputmask.numeric.extensions.js"),
                         );
 
-            bundles.Add(new ScriptBundle("~/bundles/800linkdemo").Include("~/Scripts/800linkdemo.js"));
+            bundles.Add(new ScriptBundle("~/bundles/calldemo").Include("~/Scripts/calldemo.js"));
         }
     }
 }

@@ -72,11 +72,15 @@
 
 <div id="calls-list">
     <div class="panel panel-default">
-        <div class="panel-heading">Call List</div>
+        <div class="panel-heading">
+            Call List
+            <button type="button" class="btn btn-default btn-sm pull-right text-right glyphicon glyphicon-refresh" data-bind="click: refresh"></button>
+        </div>
         @*
             todo: use a bootstrap grid here instead of these inline styles 
             https://getbootstrap.com/examples/grid/
         *@
+
         <table id="call-list-grid" class="table table-striped table-condensed" data-bind="visible: hasCalls">
         <thead>
             <tr>
