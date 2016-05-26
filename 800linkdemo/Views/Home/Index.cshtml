@@ -38,11 +38,11 @@
                 </div>*@
                 <div class="row">
                     <label for="filter-caller-number" class="col-sm-2 control-label">Caller Number</label>
-                    <input id="filter-caller-number" type="tel" class="form-control" placeholder="Caller Number" title="Caller Number" data-inputmask="'mask': '(999) 999-9999'" data-bind="textInput: currentFilter().callerNumber"/>
+                    <input id="filter-caller-number" type="tel" class="form-control" placeholder="Caller Number" title="Caller Number" data-inputmask="'mask': '(999) 999-9999'" data-bind="textInput: currentFilter().number"/>
                 </div>
                 <div class="row">
                     <label for="filter-caller-ext" class="col-sm-2 control-label">Extension</label>
-                    <input id="filter-caller-ext" class="form-control" type="number" placeholder="Extension" title="Extension" data-bind="textInput: currentFilter().callerExt"/>
+                    <input id="filter-caller-ext" class="form-control" type="number" placeholder="Extension" title="Extension" data-bind="textInput: currentFilter().ext"/>
                 </div>
                 <div class="row">
                     @* 
@@ -50,7 +50,7 @@
                     2) possibly add another dropdown that has the options Less Than & Greater Than
                     *@
                     <label for="filter-duration" class="col-sm-2 control-label">Call Duration</label>
-                    <input type="number" id="filter-duration" class="form-control" placeholder="Duration in minutes" title="Find call records that have at least this many minutes" data-bind="textInput: currentFilter().callDuration" />
+                    <input type="number" id="filter-duration" class="form-control" placeholder="Duration in minutes" title="Find call records that have at least this many minutes" data-bind="textInput: currentFilter().duration" />
                 </div>
                 <div class="row">
                     <div class="col-sm-2 control-label"><strong>Call Date Range</strong></div>

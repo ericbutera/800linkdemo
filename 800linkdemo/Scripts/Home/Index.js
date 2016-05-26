@@ -5,20 +5,19 @@
         currentFilter: ko.observable({}), // represents the current filter input values
         //TODO #11 isSearchDisabled: ko.observable(false),
         toggleSearch: function () {
-            var currentState = this.showFilters();
-            this.showFilters(~currentState);
+            this.showFilters(!this.showFilters());
         },
         validate: function(filter) {
             // will return filter object if valid, else bool false
             // remove data mask - TODO there has to be a better way to handle this mask
-            if (filter.callerNumber) {
-                filter.callerNumber = filter.callerNumber.replace(/\D/g, '');
+            if (filter.number) {
+                filter.number = filter.number.replace(/\D/g, '');
             }
 
             // validate dates are in order
             if (filter.dateAfter && filter.dateBefore) {
                 var dateAfter = moment(filter.dateAfter).toDate()
-                    , dateBefore = moment(filter.DateBefore).toDate();
+                    , dateBefore = moment(filter.dateBefore).toDate();
 
                 if (dateAfter && dateBefore) {
                     if (dateAfter > dateBefore) {
@@ -49,7 +48,7 @@
         fetchData: $.debounce(250, function(currentFilter) {
             currentFilter = currentFilter || {};
             
-            $.get('/api/Calls')
+            $.get('/api/Calls', $.param(currentFilter))
             .success(function (data, status) {
                 if (!data || data.error) {
                     return false;

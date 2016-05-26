@@ -42,6 +42,7 @@ ko.bindingHandlers.allowBindings = {
     $(function () {
         // apply input masks
         $(':input').inputmask();
+        // unmaskedvalue TODO: we can use something like this to get rid of the mask before sending it to the server
 
         // powers the error modal view model
         function ErrorVM() {
