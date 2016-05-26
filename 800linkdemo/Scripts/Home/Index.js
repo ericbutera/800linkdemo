@@ -40,16 +40,6 @@
     };
     ko.applyBindings(CallFiltersViewModel, document.getElementById('call-filters'));
 
-
-    // mock data for calls list 
-    // TODO: move to WebApi
-    var calls = [
-        { duration: 987, number: '(231) 555-5555', extension: '123', 'dateCalled': new Date('2016/05/23 08:15:22') },
-        { duration: 654, number: '(231) 555-5556', extension: '', 'dateCalled': new Date('2016/05/23 13:32:12') },
-        { duration: 321, number: '(231) 555-5557', extension: '3476', 'dateCalled': new Date('2016/05/24 10:49:31') },
-        { duration: 210, number: '(231) 555-5558', extension: '', 'dateCalled': new Date('2016/05/24 15:01:05') }
-    ];
-
     // powers the calls list grid
     // might be time to turn this into a function so i can mess with the prototype instead of the hasCalls stuff below
     var CallsListViewModel = {
@@ -58,19 +48,14 @@
             console.log('fetchData called with filter %o', ko.toJSON(currentFilter));
             currentFilter = currentFilter || {};
             
-            /*
-            $.get('/api/calls/list')
+            $.get('/api/Calls')
             .success(function (data, status) {
-                debugger;
                 if (!data || data.error) {
                     return false;
                 }
 
-                // CallsListViewModel.callsList(data); // use this when webapi implemented
+                CallsListViewModel.callsList(data); // use this when webapi implemented
             });
-            */
-
-            CallsListViewModel.callsList(calls); // for now use mocked data
         }),
         formatDuration: function (seconds) {
             // use moment.js to format seconds into something more pretty
@@ -79,6 +64,9 @@
         },
         formatDateTime: function (callDate) {
             return callDate ? moment.utc(callDate).format('MM/DD/YYYY hh:mm:ss a') : '';
+        },
+        formatPhone: function (phone) {
+            return '(' + phone.substr(0, 3) + ') ' + phone.substr(3, 3) + '-' + phone.substr(6, 4);
         }
     };
     CallsListViewModel.hasCalls = ko.computed(function () {

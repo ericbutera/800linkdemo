@@ -87,9 +87,9 @@
         </thead>
         <tbody data-bind="foreach: callsList">
             <tr>
-                <td data-bind="text: $data.number"></td>
-                <td data-bind="text: $root.formatDuration($data.duration)"></td>
-                <td data-bind="text: $root.formatDateTime($data.dateCalled)"></td>
+                <td data-bind="text: $root.formatPhone($data.Number)"></td>
+                <td data-bind="text: $root.formatDuration($data.Duration)"></td>
+                <td data-bind="text: $root.formatDateTime($data.DateCalled)"></td>
             </tr>
         </tbody>
         </table>
