@@ -28,15 +28,19 @@
             <form id="filter-form" class="form-horizontal" data-bind="submit: searchCallList">
                 @*
                 TODO #6
-                <div>
-                    saved filter id: <input type="text" data-bind="value: currentFilter().ID" disabled /> 
-                </div>
-                <div data-bind="visible: hasSavedFilters">
-                    <select data-bind="options: savedFilters, optionsText: function(filter) { return filter.Name; }, value: currentFilter().ID, optionsCaption: 'Choose a filter&hellip;'">
-                    </select>
-                    <span data-bind="text:ko.toJSON(savedFilters)"></span>
-                </div>
                 *@
+                <div class="row" data-bind="visible: hasSavedFilters">
+                    <label for="load-search" class="col-sm-2 control-label">Load Search</label>
+                    <select id="load-search" class="form-control" data-bind="options: savedFilters, optionsText: function(filter) { return filter.Name; }, value: selectedSavedFilter, optionsCaption: 'Choose a filter&hellip;'"></select>
+                </div>
+
+                <div class="row" data-bind="visible: selectedSavedFilter">
+                    <div>
+                        saved filter id: 
+                        <input type="text" data-bind="value: currentFilter().ID" disabled />
+                    </div>
+                    <div data-bind="text:ko.toJSON(selectedSavedFilter)"></div> 
+                </div>
                 
                 <div class="row">
                     <label for="filter-caller-number" class="col-sm-2 control-label">Caller Number</label>
