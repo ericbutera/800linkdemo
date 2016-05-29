@@ -11,8 +11,7 @@
             this.showFilters(!this.showFilters());
         },
         resetSearch: function() {
-            debugger;
-            this.selectedSavedFilter(false);
+            this.selectedSavedFilter(undefined); // if this isnt undefined it wont reset the dropdown
             this.currentFilter({});
             this.searchCallList();
         },
@@ -65,7 +64,6 @@
 
             // TODO #11 CallFiltersViewModel.isSearchDisabled(!allowSearch);
             if (allowSearch) {
-                if (filter.ID) delete filter.ID; // this was causing the api to hit /api/Calls/:id instead of /api/Calls?...
                 CallsListViewModel.fetchData(filter);
             }
         },

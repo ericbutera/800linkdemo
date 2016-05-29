@@ -35,6 +35,10 @@ namespace CallDemo.Controllers
             return calls;
         }
 
+        /* 
+         * i removed this for now because it was being hit when a saved filter
+         * was used since they have an ID. it wasn't in use anyways
+         * 
         // GET: api/Calls/5
         [ResponseType(typeof(CallLog))]
         public async Task<IHttpActionResult> GetCall(int id)
@@ -47,6 +51,7 @@ namespace CallDemo.Controllers
 
             return Ok(call);
         }
+        */
 
         // PUT: api/Calls/5
         [ResponseType(typeof(void))]
