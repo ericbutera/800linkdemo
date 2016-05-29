@@ -5,6 +5,7 @@
         showFilters: ko.observable(false),
         savedFilters: ko.observableArray(), 
         currentFilter: ko.observable({}), // represents the current filter input values
+        selectedSavedFilter: ko.observable(false),
         toggleSearch: function () {
             //TODO #11 isSearchDisabled: ko.observable(false),
             this.showFilters(!this.showFilters());
@@ -15,7 +16,18 @@
         },
         saveSearch: function() {
             // #5
-            CallDemo.displayError('Not implemented');
+            var filter = this.currentFilter();
+            var jsonFilter = JSON.stringify(filter);
+
+            if (filter.ID > 0) {
+                // put
+                $.put('/api/SavedFilters/' + filter.ID, jsonFilter)
+                .success(function (result) {
+                });
+            } else {
+                // post
+                $.post('/api/SavedFilters', jsonFilter)
+            }
         },
         deleteSearch: function() {
             // todo turn into modal #26
@@ -61,25 +73,19 @@
                     CallFiltersViewModel.savedFilters(data);
                 }
             });
-
-            /*
-            CallFiltersViewModel.savedFilters([
-                {
-                    ID: 1,
-                    Name: 'Test!!!!!',
-                    Number: '2316493073',
-                    Extension: '7777',
-                    Duration: Math.floor((Math.random() * 25) + 1),
-                    DateAfter: moment().utc().subtract(1, 'd').startOf('day').toString(),
-                    DateBefore: moment().utc().add(1, 'd').endOf('day').toString()
-                }
-            ]);
-            */
         }
     };
-    CallFiltersViewModel.hasSavedFilters = ko.computed(function(){
+    CallFiltersViewModel.hasSavedFilters = ko.computed(function () {
         return this.savedFilters().length > 0;
     }, CallFiltersViewModel),
+
+    CallFiltersViewModel.selectedSavedFilter.subscribe(function (newFilter) {
+        // if a user selects a predefined filter, update the current filter
+        console.log('selected filter changed %o', newFilter);
+        if (newFilter) {
+            CallFiltersViewModel.currentFilter(newFilter);
+        }
+    });
 
     ko.applyBindings(CallFiltersViewModel, document.getElementById('call-filters'));
     CallFiltersViewModel.loadSavedFilters();

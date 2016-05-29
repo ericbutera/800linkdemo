@@ -33,7 +33,7 @@ ko.bindingHandlers.allowBindings = {
             var statusCode = jqXhr.statusCode ? jqXhr.statusCode() : false;
             var message = statusCode && statusCode.responseText ? statusCode.responseText : false;
             var exceptionMessageJson = message && message.ExceptionMessage ? message.ExceptionMessage : false;
-            var message = exceptionMessageJson ? JSON.parse(exceptionMessageJson) : 'There was an error fetching the call list data. Please try again';
+            var message = exceptionMessageJson ? JSON.parse(exceptionMessageJson) : 'There was an error with the response from the server. Please try again later.';
             CallDemo.Errors.add(message);
         }
     });
