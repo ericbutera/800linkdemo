@@ -11,6 +11,8 @@
             this.showFilters(!this.showFilters());
         },
         resetSearch: function() {
+            debugger;
+            this.selectedSavedFilter(false);
             this.currentFilter({});
             this.searchCallList();
         },
@@ -38,14 +40,14 @@
         validate: function(filter) {
             // will return filter object if valid, else bool false
             // remove data mask - TODO there has to be a better way to handle this mask
-            if (filter.number) {
-                filter.number = filter.number.replace(/\D/g, '');
+            if (filter.Number) {
+                filter.Number = filter.Number.replace(/\D/g, '');
             }
 
             // validate dates are in order
-            if (filter.dateAfter && filter.dateBefore) {
-                var dateAfter = moment(filter.dateAfter).toDate()
-                    , dateBefore = moment(filter.dateBefore).toDate();
+            if (filter.DateAfter && filter.DateBefore) {
+                var dateAfter = moment(filter.DateAfter).toDate()
+                    , dateBefore = moment(filter.DateBefore).toDate();
 
                 if (dateAfter && dateBefore) {
                     if (dateAfter > dateBefore) {
@@ -63,6 +65,7 @@
 
             // TODO #11 CallFiltersViewModel.isSearchDisabled(!allowSearch);
             if (allowSearch) {
+                if (filter.ID) delete filter.ID; // this was causing the api to hit /api/Calls/:id instead of /api/Calls?...
                 CallsListViewModel.fetchData(filter);
             }
         },
@@ -81,10 +84,20 @@
 
     CallFiltersViewModel.selectedSavedFilter.subscribe(function (newFilter) {
         // if a user selects a predefined filter, update the current filter
-        console.log('selected filter changed %o', newFilter);
         if (newFilter) {
+            // c# doesn't have a date type so we have to chop off the time bit to make this fit into the 
+            // html5 date picker
+            if (newFilter.DateAfter) newFilter.DateAfter = moment(newFilter.DateAfter).utc().format('YYYY-MM-DD');
+            if (newFilter.DateBefore) newFilter.DateBefore = moment(newFilter.DateBefore).utc().format('YYYY-MM-DD');
+            
             CallFiltersViewModel.currentFilter(newFilter);
+        } else {
+            // it might be better to not clear the entire thing and only get rid of the ID field 
+            CallFiltersViewModel.currentFilter({});
         }
+    });
+    CallFiltersViewModel.selectedSavedFilter.extend({
+        notify: 'always'
     });
 
     ko.applyBindings(CallFiltersViewModel, document.getElementById('call-filters'));

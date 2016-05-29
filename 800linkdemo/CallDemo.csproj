@@ -139,7 +139,6 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="BusinessLayer\CallLogFilters.cs" />
-    <Compile Include="BusinessLayer\Types.cs" />
     <Compile Include="Classes\SimulateRandomError.cs" />
     <Compile Include="Controllers\CallsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />

@@ -21,16 +21,16 @@ namespace CallDemo.Controllers
 
         // GET: api/Calls
         [SimulateRandomServerError]
-        public IQueryable<CallLog> GetCalls([FromUri] FilterSearchDTO search)
+        public IQueryable<CallLog> GetCalls([FromUri] SavedFilter search)
         {
             IQueryable<CallLog> calls = db.Calls;
 
             // apply search filters 
             var filters = new CallLogFilters(calls);
-            calls = filters.ApplyNumber(search.number);
-            calls = filters.ApplyExtension(search.ext);
-            calls = filters.ApplyDuration(search.duration);
-            calls = filters.ApplyDateRange(search.dateAfter, search.dateBefore);
+            calls = filters.ApplyNumber(search.Number);
+            calls = filters.ApplyExtension(search.Extension);
+            calls = filters.ApplyDuration(search.Duration);
+            calls = filters.ApplyDateRange(search.DateAfter, search.DateBefore);
 
             return calls;
         }
