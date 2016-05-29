@@ -1,0 +1,104 @@
+﻿<div id="call-filters">
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="@Url.Action("Index", "Home")">Call List</a>
+            </div>
+
+            <div class="collapse navbar-collapse" id="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right search-button">
+                    <li>
+                        <button class="btn btn-default btn-sm pull-right text-right" data-bind="click: toggleSearch" title="Click to search&hellip;">
+                            <span class="glyphicon glyphicon-search"></span> 
+                            Search
+                        </button> 
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="panel panel-default" data-bind="visible: showFilters">
+        <div class="panel-heading">Filter Search</div>
+        <div class="panel-body">
+            @* 
+            revisit this after i get currentFilter able to remove the mask in a better way
+            , event: { change: searchCallList, blur: searchCallList }
+            *@
+            <form id="filter-form" class="form-horizontal" data-bind="submit: searchCallList">
+                @*
+                TODO #6
+                <div>
+                    saved filter id: <input type="text" data-bind="value: currentFilter().ID" disabled /> 
+                </div>
+                <div data-bind="visible: hasSavedFilters">
+                    <select data-bind="options: savedFilters, optionsText: function(filter) { return filter.Name; }, value: currentFilter().ID, optionsCaption: 'Choose a filter&hellip;'">
+                    </select>
+                    <span data-bind="text:ko.toJSON(savedFilters)"></span>
+                </div>
+                *@
+                
+                <div class="row">
+                    <label for="filter-caller-number" class="col-sm-2 control-label">Caller Number</label>
+                    <input id="filter-caller-number" type="tel" class="form-control" placeholder="Caller Number" title="Caller Number" data-inputmask="'mask': '(999) 999-9999'" data-bind="textInput: currentFilter().number"/>
+                </div>
+                <div class="row">
+                    <label for="filter-caller-ext" class="col-sm-2 control-label">Extension</label>
+                    <input id="filter-caller-ext" class="form-control" type="number" placeholder="Extension" title="Extension" data-bind="textInput: currentFilter().ext"/>
+                </div>
+                <div class="row">
+                    @* 
+                    1) possibly add a dropdown to say duration in seconds/minutes/hours 
+                    2) possibly add another dropdown that has the options Less Than & Greater Than
+                    *@
+                    <label for="filter-duration" class="col-sm-2 control-label">Call Duration</label>
+                    <input type="number" id="filter-duration" class="form-control" placeholder="Duration in minutes" title="Find call records that have at least this many minutes" data-bind="textInput: currentFilter().duration" />
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-2 control-label"><strong>Call Date Range</strong></div>
+                    <label for="filter-date-after" class="col-sm-1 control-label">After</label>
+                    <div class="col-sm-4"><input type="date" id="filter-date-after" class="form-control control" title="Find call records after on or after this date" data-bind="value: currentFilter().dateAfter" /></div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2 control-label"></div>
+                    <label for="filter-date-before" class="col-sm-1 control-label">Before</label>
+                    <div class="col-sm-4"><input type="date" id="filter-date-before" class="form-control control" title="Find call records before on or before this date" data-bind="value: currentFilter().dateBefore" /></div>
+                </div>
+                @*
+                TODO #11 data-bind="disable: isSearchDisabled"
+                <div class="row">
+                    <div class="col-sm-offset-8 col-sm-4 text-right">
+                        <button type="submit" class="btn btn-xs btn-primary text-right">Search</button>
+                        <button data-bind="click: resetSearch" class="btn btn-xs btn-primary text-right"><span class="glyphicon-"></span>Reset</button>
+                        <button data-bind="click: saveSearch" class="btn btn-xs btn-primary text-right">Save</button>
+                        <button data-bind="click: deleteSearch" class="btn btn-xs btn-primary text-right">Delete</button>
+                    </div>
+                </div>
+                *@
+            </form>
+            <div class="text-right">
+                <div class="btn-group btn-group-sm" role="group" aria-label="Actions">
+                    <button data-bind="click: searchCallList" class="btn btn-primary" title="Search the call list">Search</button>
+                    <button data-bind="click: resetSearch" class="btn btn-warning" title="Reset the search form">Reset</button>
+
+                    <div class="btn-group btn-group-sm text-left" role="group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Actions
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" data-bind="click: saveSearch" title="Save this filter">Save</a></li>
+                            <li><a href="#" data-bind="visible: currentFilter().id, click: deleteSearch" title="Delete this filter">Delete</a></li>
+                        </ul>
+                    </div>
+                </div>
+                @*
+                
+                <button data-bind="click: saveSearch" class="btn btn-xs btn-primary text-right">Save</button>
+                <button data-bind="click: deleteSearch" class="btn btn-xs btn-danger text-right">Delete</button>
+                *@
+            </div>
+        </div>
+    </div>
+</div>

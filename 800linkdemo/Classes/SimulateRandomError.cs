@@ -13,7 +13,7 @@ namespace CallDemo.Classes
     {
         public override void OnActionExecuting(HttpActionContext actionContext)
         {
-            var error = DateTime.Now.Second % 3 == 0 ? true : false;
+            var error = DateTime.Now.Second % 5 == 0 ? true : false;
             if (error)
             {
                 var random = new Random();

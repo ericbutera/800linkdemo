@@ -143,12 +143,14 @@
     <Compile Include="Classes\SimulateRandomError.cs" />
     <Compile Include="Controllers\CallsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\SavedFiltersController.cs" />
     <Compile Include="DataLayer\CallDemoContext.cs" />
     <Compile Include="DataLayer\CallDemoInitializer.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\CallLog.cs" />
+    <Compile Include="Models\SavedFilter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -206,6 +208,8 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Shared\_ErrorModal.cshtml" />
+    <Content Include="Views\Home\Index\_CallsList.cshtml" />
+    <Content Include="Views\Home\Index\_Filters.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

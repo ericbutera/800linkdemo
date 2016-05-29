@@ -20,5 +20,7 @@ namespace CallDemo.DataLayer
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
         }
+
+        public System.Data.Entity.DbSet<CallDemo.Models.SavedFilter> SavedFilters { get; set; }
     }
 }

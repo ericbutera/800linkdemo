@@ -2,9 +2,9 @@
 CallDemo = {
     ViewModels: {},
     displayError: function (errorMessage) {
-        debugger;
-        // todo make this a modal
-        
+        // convenience method to show a single error, returns false
+        CallDemo.Errors.add(errorMessage);
+        return false;
     }
 };
 

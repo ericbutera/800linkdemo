@@ -22,9 +22,10 @@ namespace CallDemo.BusinessLayer
         public IQueryable<CallLog> ApplyNumber(string number)
         {
             // if I were to write this in raw SQL I'd use SELECT cols FROM CallLog WHERE [Number] LIKE @searchNumber + '%'
-            return !string.IsNullOrWhiteSpace(number)
-                ? _calls.Where(c => c.Number.StartsWith(number))
-                : _calls;
+            if (!string.IsNullOrWhiteSpace(number))
+                _calls = _calls.Where(c => c.Number.StartsWith(number));
+
+            return _calls;
         }
 
         /// <summary>
@@ -34,9 +35,10 @@ namespace CallDemo.BusinessLayer
         /// <returns></returns>
         public IQueryable<CallLog> ApplyExtension(string ext)
         {
-            return !string.IsNullOrWhiteSpace(ext)
-                ? _calls.Where(c => c.Extension.StartsWith(ext))
-                : _calls;
+            if (!string.IsNullOrWhiteSpace(ext))
+                _calls = _calls.Where(c => c.Extension.StartsWith(ext));
+
+            return _calls;
         }
 
         /// <summary>
@@ -46,9 +48,10 @@ namespace CallDemo.BusinessLayer
         /// <returns></returns>
         public IQueryable<CallLog> ApplyDuration(int? duration)
         {
-            return (duration != null && duration > 0)
-                ? _calls.Where(c => c.Duration >= (duration * 60))
-                : _calls;
+            if (duration != null && duration > 0)
+                _calls = _calls.Where(c => c.Duration >= (duration * 60));
+
+            return _calls;
         }
 
         /// <summary>
@@ -72,17 +75,17 @@ namespace CallDemo.BusinessLayer
             if (dateAfter != null && dateBefore != null)
             {
                 // filter based on requested date between dateAfter and dateBefore
-                return _calls.Where(c => c.DateCalled >= dateAfter && c.DateCalled <= dateBefore);
+                _calls = _calls.Where(c => c.DateCalled >= dateAfter && c.DateCalled <= dateBefore);
             }
             else if (dateAfter != null)
             {
                 // filter based on requested date is greater or equal to dateAfter
-                return _calls.Where(c => c.DateCalled >= dateAfter);
+                _calls = _calls.Where(c => c.DateCalled >= dateAfter);
             }
             else if (dateBefore != null)
             {
                 // filter based on requested date is less than or equal to dateBefore
-                return _calls.Where(c => c.DateCalled <= dateBefore);
+                _calls = _calls.Where(c => c.DateCalled <= dateBefore);
             }
 
             return _calls;
