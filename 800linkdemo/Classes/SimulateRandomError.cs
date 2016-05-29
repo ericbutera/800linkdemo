@@ -1,22 +1,30 @@
 ﻿using System;
-using System.Web.Mvc;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http.Controllers;
+using System.Web.Http.Filters;
 
 namespace CallDemo.Classes
 {
     /// <summary>
-    /// This attribute will randomly throw errors saying cannot connect to server
+    /// This attribute will randomly throw errors to show the app can handle errors gracefully
     /// </summary>
     public class SimulateRandomServerError : ActionFilterAttribute
     {
-        public override void OnActionExecuting(ActionExecutingContext filterContext)
+        public override void OnActionExecuting(HttpActionContext actionContext)
         {
             var error = DateTime.Now.Second % 3 == 0 ? true : false;
             if (error)
             {
                 var random = new Random();
-                var errors = new string[] { "Unable to connecto to server", "Invalid response from server" };
-                filterContext.HttpContext.Response.StatusCode = 500;
-                filterContext.HttpContext.Response.Write((string)errors[random.Next(errors.Length)]);
+                // maybe make this a dictionary so we can have different status codes that make sense
+                var errors = new string[] { "Unable to connect to the server", "Invalid response from server" };
+                var offset = random.Next(errors.Length);
+
+                actionContext.Response = actionContext.Request.CreateErrorResponse(
+                    HttpStatusCode.InternalServerError,
+                    errors[offset]
+                );
             }
         }
     }

@@ -74,6 +74,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             Call List
+            <span data-bind="visible: hasCalls, text: ' (' + callsList().length + ' found)'"></span>
             <button type="button" class="btn btn-default btn-sm pull-right text-right glyphicon glyphicon-refresh" data-bind="click: refresh"></button>
         </div>
         @*
@@ -91,7 +92,10 @@
         </thead>
         <tbody data-bind="foreach: callsList">
             <tr>
-                <td data-bind="text: $root.formatPhone($data.Number)"></td>
+                <td>
+                    <span data-bind="text: $root.formatPhone($data.Number)"></span>
+                    <span data-bind="visible: $data.Extension, text: ' ext. ' + $data.Extension"></span>
+                </td>
                 <td data-bind="text: $root.formatDuration($data.Duration)"></td>
                 <td data-bind="text: $root.formatDateTime($data.DateCalled)"></td>
             </tr>

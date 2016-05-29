@@ -1,9 +1,4 @@
-﻿/* this will go away when i move to using bootstrap table with panel */
-table thead th.caller-header { 
-    width: 150px;
-}
-
-div.filter-button { 
+﻿div.filter-button { 
     float: right;
     clear: left;
     vertical-align: middle;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using CallDemo.Classes;
 
 namespace CallDemo
 {
@@ -10,6 +11,7 @@ namespace CallDemo
         public static void Register(HttpConfiguration config)
         {
             // Web API configuration and services
+            config.Filters.Add(new SimulateRandomServerError());
 
             // Web API routes
             config.MapHttpAttributeRoutes();
@@ -19,6 +21,7 @@ namespace CallDemo
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
         }
     }
 }

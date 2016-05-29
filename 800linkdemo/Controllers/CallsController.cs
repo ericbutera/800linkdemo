@@ -10,43 +10,27 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using CallDemo.Models;
 using CallDemo.DataLayer;
+using CallDemo.BusinessLayer;
 using CallDemo.Classes;
 
 namespace CallDemo.Controllers
 {
-    public class FilterSearchDTO
-    {
-        public string number { get; set; }
-        public string ext { get; set; }
-        public int? duration { get; set; }
-        public DateTime? dateAfter { get; set; }
-        public DateTime? dateBefore { get; set; }
-    }
-
     public class CallsController : ApiController
     {
         private CallDemoContext db = new CallDemoContext();
 
         // GET: api/Calls
-        // TODO [SimulateRandomServerError]
+        [SimulateRandomServerError]
         public IQueryable<CallLog> GetCalls([FromUri] FilterSearchDTO search)
         {
-            // simulate random server error
-            var error = DateTime.Now.Second % 5 == 0 ? true : false;
-            if (error)
-            {
-                var random = new Random();
-                var errors = new string[] { "Unable to connecto to server", "Invalid response from server" };
-                throw new Exception((string)errors[random.Next(errors.Length)]);
-            }
-
             IQueryable<CallLog> calls = db.Calls;
 
-            // apply search filters
-            if (!string.IsNullOrWhiteSpace(search.number))
-            {
-                calls = calls.Where(c => c.Number.StartsWith(search.number));
-            }
+            // apply search filters 
+            var filters = new CallLogFilters(calls);
+            calls = filters.ApplyNumber(search.number);
+            calls = filters.ApplyExtension(search.ext);
+            calls = filters.ApplyDuration(search.duration);
+            calls = filters.ApplyDateRange(search.dateAfter, search.dateBefore);
 
             return calls;
         }

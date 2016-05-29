@@ -68,7 +68,7 @@
         formatDuration: function (seconds) {
             // use moment.js to format seconds into something more pretty
             var ms = $.isNumeric(seconds) ? parseInt(seconds, 10) * 1000 : 0;
-            return moment.utc(ms).format('HH [hours] mm [minutes] ss [seconds]');
+            return moment.utc(ms).format('HH [hr] mm [min] ss [sec]');
         },
         formatDateTime: function (callDate) {
             return callDate ? moment.utc(callDate).format('MM/DD/YYYY hh:mm:ss a') : '';
