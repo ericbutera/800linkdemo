@@ -58,10 +58,10 @@
                     CallFiltersViewModel.savedFilters(data);
                 }
             });
-        },
+        }, 
         createSavedFilter: function () {
             this.resetSelectedSavedFilter();
-            this.currentFilter().ID = null;
+            this.currentFilter().ID = 0;
             this.showSavedFilterName(true);
         },
         saveSavedFilter: function() {
@@ -84,7 +84,7 @@
                     return currentFilter;
                 });
 
-                // this isnt working
+                // update the loadedSavedFilters observabl with our new value this isnt working
                 /*CallFiltersViewModel.savedFilters.removeAll();
                 CallFiltersViewModel.savedFilters(filters);
                 CallFiltersViewModel.selectedSavedFilter(CallFiltersViewModel.currentFilter());*/
@@ -96,7 +96,10 @@
                     type: 'PUT',
                     data: jsonFilter,
                     contentType: 'application/json',
-                    success: updateSavedFilters 
+                    success: function () {
+                        updateSavedFilters()
+                        CallFiltersViewModel.currentFilter(arguments[0]);
+                    }
                     /*
                     error: function (jqXHR) {
                         // could do custom error handling here to show the server side validation failures from the ModelState
@@ -130,6 +133,15 @@
         return this.savedFilters().length > 0;
     }, CallFiltersViewModel),
 
+    /*
+    todo - hide Save button if we can't save a filter
+    CallFiltersViewModel.canSaveSavedFilter = ko.computed(function() {
+        var filter = this.currentFilter();
+        var result =  (filter.ID > 0 || (filter.Name && filter.Name.length))
+            ? true : false;
+        return result;
+    }, CallFiltersViewModel),*/
+
     CallFiltersViewModel.selectedSavedFilter.subscribe(function (newFilter) {
         // if a user selects a predefined filter, update the current filter
         if (newFilter) {
@@ -149,13 +161,18 @@
     });
 
     CallFiltersViewModel.currentFilter.subscribe(function (filterValue) {
-        if (filterValue.ID) {
+        if (filterValue && filterValue.ID) {
             CallFiltersViewModel.showSavedFilterName(true);
         } else {
             // this may cause issues with Actions > Create
             CallFiltersViewModel.showSavedFilterName(false);
         }
     });
+
+    CallFiltersViewModel.showDeleteSavedFilter = ko.computed(function () {
+        var filter = CallFiltersViewModel.currentFilter();
+        return (filter.ID && filter.ID > 0) ? true : false;
+    }, CallFiltersViewModel);
 
     ko.applyBindings(CallFiltersViewModel, document.getElementById('call-filters'));
     CallFiltersViewModel.loadSavedFilters();

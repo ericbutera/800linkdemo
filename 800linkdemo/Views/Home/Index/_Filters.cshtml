@@ -37,8 +37,8 @@
                             </button>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li><a href="#" data-bind="click: createSavedFilter" title="Create Search">Create</a></li>
-                                <li><a href="#" data-bind="visible: currentFilter().ID, click: saveSavedFilter" title="Save this filter">Save</a></li>
-                                <li><a href="#" data-bind="visible: currentFilter().ID, click: deleteSavedFilter" title="Delete this saved search">Delete</a></li>
+                                <li><a href="#" data-bind="click: saveSavedFilter" title="Save this filter">Save</a></li>
+                                <li><a href="#" data-bind="visible: showDeleteSavedFilter, click: deleteSavedFilter" title="Delete this saved search">Delete</a></li>
                             </ul>
                         </div>
                     </div>
@@ -60,10 +60,10 @@
                 </div>
 
                 <div class="row">
-                    <!--
+                    @*
                     1) possibly add a dropdown to say duration in seconds/minutes/hours 
-                    2) possibly add another dropdown that has the options Less Than & Greater Than
--->
+                    2) possibly add another dropdown that has the options Less Than & Greater Than 
+                    *@
                     <div class="col-sm-2"><label for="filter-duration" class="control-label">Call Duration</label></div>
                     <div class="col-sm-10"><input type="number" id="filter-duration" class="form-control" placeholder="Duration in minutes" title="Find call records that have at least this many minutes" data-bind="textInput: currentFilter().Duration" /></div>
                 </div>
@@ -83,20 +83,6 @@
                 <div class="btn-group btn-group-sm" role="group" aria-label="Actions">
                     <button data-bind="click: searchCallList" class="btn btn-primary" title="Search the call list">Search</button>
                     <button data-bind="click: resetSearch" class="btn btn-warning" title="Reset the search form">Reset</button>
-
-                    @*
-                    <div class="btn-group btn-group-sm text-left" role="group">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Actions
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a href="#" data-bind="click: saveSavedFilter" title="Save this filter">Save</a></li>
-                            <li><a href="#" data-bind="visible: currentFilter().ID, click: renameSavedFilter" title="Save this search">Save</a></li>
-                            <li><a href="#" data-bind="visible: currentFilter().ID, click: deleteSavedFilter" title="Delete this saved search">Delete</a></li>
-                        </ul>
-                    </div> 
-                    *@
                 </div>
             </div>
         </div>
