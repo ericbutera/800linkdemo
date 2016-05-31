@@ -68,7 +68,6 @@
             this.showSavedFilterName(true);
         },
         saveSavedFilter: function() {
-            // #5
             var self = this;
             var currentFilter = this.currentFilter();
 
@@ -100,6 +99,7 @@
                     self.savedFilters(filters);
                     self.selectedSavedFilter(currentFilter);
                     self.showSavedFilterName(true);
+                    // #31 TODO - Updating saved search makes Actions > Delete disappear
                 });
             } else {
                 // create a new saved search filter record and update the load search dropdown
@@ -127,7 +127,7 @@
                     self.savedFilters.remove(filter);
                     self.resetSelectedSavedFilter();
                     self.currentFilter({});
-                    // TODO - refresh grid since filter isn't applied anymore
+                    // #30 TODO - refresh grid since filter isn't applied anymore
                 });
             }
         }
