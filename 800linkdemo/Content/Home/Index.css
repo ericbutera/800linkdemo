@@ -12,3 +12,8 @@
 .search-button {
     padding: 10px 10px 0 0
 }
+
+ul.dropdown-menu-right {
+    right: 0;
+    left: auto;
+}

@@ -11,7 +11,7 @@ namespace CallDemo
         public static void Register(HttpConfiguration config)
         {
             // Web API configuration and services
-            config.Filters.Add(new SimulateRandomServerError());
+            // config.Filters.Add(new SimulateRandomServerError());
 
             // Web API routes
             config.MapHttpAttributeRoutes();

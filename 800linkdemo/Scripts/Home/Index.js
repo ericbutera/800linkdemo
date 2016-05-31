@@ -6,35 +6,19 @@
         savedFilters: ko.observableArray(), 
         currentFilter: ko.observable({}), // represents the current filter input values
         selectedSavedFilter: ko.observable(false),
+        showSavedFilterName: ko.observable(false), // change this to be a computed instead of hard coding show/hides all over the place
         toggleSearch: function () {
             //TODO #11 isSearchDisabled: ko.observable(false),
             this.showFilters(!this.showFilters());
         },
         resetSearch: function() {
-            this.selectedSavedFilter(undefined); // if this isnt undefined it wont reset the dropdown
+            this.resetSelectedSavedFilter();
             this.currentFilter({});
             this.searchCallList();
-        },
-        saveSearch: function() {
-            // #5
-            var filter = this.currentFilter();
-            var jsonFilter = JSON.stringify(filter);
-
-            if (filter.ID > 0) {
-                // put
-                $.put('/api/SavedFilters/' + filter.ID, jsonFilter)
-                .success(function (result) {
-                });
-            } else {
-                // post
-                $.post('/api/SavedFilters', jsonFilter)
-            }
-        },
-        deleteSearch: function() {
-            // todo turn into modal #26
-            if (confirm('Are you sure you wish to delete this filter?')) {
-                CallDemo.displayError('Not implemented');
-            }
+            this.showSavedFilterName(false);
+        }, 
+        resetSelectedSavedFilter: function() {
+            this.selectedSavedFilter(undefined); // if this isnt undefined it wont reset the dropdown
         },
         validate: function(filter) {
             // will return filter object if valid, else bool false
@@ -74,6 +58,59 @@
                     CallFiltersViewModel.savedFilters(data);
                 }
             });
+        },
+        createSavedFilter: function () {
+            this.resetSelectedSavedFilter();
+            this.currentFilter().ID = null;
+            this.showSavedFilterName(true);
+        },
+        saveSavedFilter: function() {
+            // #5
+            var filter = this.currentFilter();
+            var jsonFilter = JSON.stringify(filter);
+
+            // validate that we have a name and possibly some sort of data
+            if (!filter.Name || !filter.Name.length) {
+                CallDemo.displayError('Please provide a name before saving');
+                return false;
+            }
+
+            var updateSavedFilters = function () {
+                console.log("updating saved filters %o", CallFiltersViewModel.savedFilters());
+                // update load search dropdown filter.Name property
+                var filters = $.map(CallFiltersViewModel.savedFilters(), function (currentFilter) {
+                    if (filter.ID == currentFilter.ID) {
+                        return filter;
+                    }
+                    return currentFilter;
+                });
+                console.log("updated saved filters %o", filters);
+                CallFiltersViewModel.savedFilters(filters);
+            };
+
+            if (filter.ID > 0) {
+                $.ajax({
+                    url: '/api/SavedFilters/' + filter.ID, jsonFilter,
+                    type: 'PUT',
+                    data: jsonFilter,
+                    contentType: 'application/json',
+                    success: updateSavedFilters 
+                    /*
+                    error: function (jqXHR) {
+                        // could do custom error handling here to show the server side validation failures from the ModelState
+                    }
+                    */
+                });
+            } else {
+                $.post('/api/SavedFilters', jsonFilter)
+                    .success(updateSavedFilters);
+            }
+        },
+        deleteSavedFilter: function() {
+            // #26 todo turn into modal
+            if (confirm('Are you sure you wish to delete this filter?')) {
+                this.savedFilters.remove(CallFiltersViewModel.currentFilter());
+            }
         }
     };
     CallFiltersViewModel.hasSavedFilters = ko.computed(function () {
@@ -96,6 +133,15 @@
     });
     CallFiltersViewModel.selectedSavedFilter.extend({
         notify: 'always'
+    });
+
+    CallFiltersViewModel.currentFilter.subscribe(function (filterValue) {
+        if (filterValue.ID) {
+            CallFiltersViewModel.showSavedFilterName(true);
+        } else {
+            // this may cause issues with Actions > Create
+            CallFiltersViewModel.showSavedFilterName(false);
+        }
     });
 
     ko.applyBindings(CallFiltersViewModel, document.getElementById('call-filters'));

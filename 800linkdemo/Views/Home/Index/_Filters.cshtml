@@ -27,70 +27,77 @@
             *@
             <form id="filter-form" class="form-horizontal" data-bind="submit: searchCallList">
                 <div class="row" data-bind="visible: hasSavedFilters">
-                    <label for="load-search" class="col-sm-2 control-label">Load Search</label>
-                    <select id="load-search" class="form-control" data-bind="options: savedFilters, optionsText: function(filter) { return filter.Name; }, value: selectedSavedFilter, optionsCaption: 'Choose a filter&hellip;'"></select>
+                    <div class="col-sm-2 "><label for="load-search" class="control-label">Load Search</label></div>
+                    <div class="col-sm-7"><select id="load-search" class="form-control" data-bind="options: savedFilters, optionsText: function(filter) { return filter.Name; }, value: selectedSavedFilter, optionsCaption: 'Choose a filter&hellip;'"></select></div>
+                    <div class="col-sm-3 text-right">
+                        <div class="btn-group btn-group-sm text-left" role="group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Actions
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li><a href="#" data-bind="click: createSavedFilter" title="Create Search">Create</a></li>
+                                <li><a href="#" data-bind="visible: currentFilter().ID, click: saveSavedFilter" title="Save this filter">Save</a></li>
+                                <li><a href="#" data-bind="visible: currentFilter().ID, click: deleteSavedFilter" title="Delete this saved search">Delete</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" data-bind="visible: showSavedFilterName">
+                    <div class="col-sm-2"><label for="saved-filter-name" class="control-label">Name</label></div>
+                    <div class="col-sm-10"><input id="saved-filter-name" type="text" class="form-control" placeholder="Name" title="Search Name" data-bind="textInput: currentFilter().Name"/></div>
                 </div>
 
                 <div class="row">
-                    <label for="filter-caller-number" class="col-sm-2 control-label">Caller Number</label>
-                    <input id="filter-caller-number" type="tel" class="form-control" placeholder="Caller Number" title="Caller Number" data-inputmask="'mask': '(999) 999-9999'" data-bind="textInput: currentFilter().Number"/>
+                    <div class="col-sm-2"><label for="filter-caller-number" class="control-label">Caller Number</label></div>
+                    <div class="col-sm-10"><input id="filter-caller-number" type="tel" class="form-control" placeholder="Caller Number" title="Caller Number" data-inputmask="'mask': '(999) 999-9999'" data-bind="textInput: currentFilter().Number"/></div>
                 </div>
+
                 <div class="row">
-                    <label for="filter-caller-ext" class="col-sm-2 control-label">Extension</label>
-                    <input id="filter-caller-ext" class="form-control" type="number" placeholder="Extension" title="Extension" data-bind="textInput: currentFilter().Extension"/>
+                    <div class="col-sm-2"><label for="filter-caller-ext" class="control-label">Extension</label></div>
+                    <div class="col-sm-10"><input id="filter-caller-ext" class="form-control" type="number" placeholder="Extension" title="Extension" data-bind="textInput: currentFilter().Extension"/></div>
                 </div>
+
                 <div class="row">
-                    @* 
+                    <!--
                     1) possibly add a dropdown to say duration in seconds/minutes/hours 
                     2) possibly add another dropdown that has the options Less Than & Greater Than
-                    *@
-                    <label for="filter-duration" class="col-sm-2 control-label">Call Duration</label>
-                    <input type="number" id="filter-duration" class="form-control" placeholder="Duration in minutes" title="Find call records that have at least this many minutes" data-bind="textInput: currentFilter().Duration" />
+-->
+                    <div class="col-sm-2"><label for="filter-duration" class="control-label">Call Duration</label></div>
+                    <div class="col-sm-10"><input type="number" id="filter-duration" class="form-control" placeholder="Duration in minutes" title="Find call records that have at least this many minutes" data-bind="textInput: currentFilter().Duration" /></div>
                 </div>
 
                 <div class="row">
-                    <div class="col-sm-2 control-label"><strong>Call Date Range</strong></div>
-                    <label for="filter-date-after" class="col-sm-1 control-label">After</label>
-                    <div class="col-sm-4"><input type="date" id="filter-date-after" class="form-control control" title="Find call records after on or after this date" data-bind="value: currentFilter().DateAfter" /></div>
+                    <div class="col-sm-2"><strong class="control-label">Call Date Range</strong></div>
+                    <div class="col-sm-1"><label for="filter-date-after" class="control-label">After</label></div>
+                    <div class="col-sm-9"><input type="date" id="filter-date-after" class="form-control control" title="Find call records after on or after this date" data-bind="value: currentFilter().DateAfter" /></div>
                 </div>
                 <div class="row">
                     <div class="col-sm-2 control-label"></div>
-                    <label for="filter-date-before" class="col-sm-1 control-label">Before</label>
-                    <div class="col-sm-4"><input type="date" id="filter-date-before" class="form-control control" title="Find call records before on or before this date" data-bind="value: currentFilter().DateBefore" /></div>
+                    <div class="col-sm-1"><label for="filter-date-before" class="control-label">Before</label></div>
+                    <div class="col-sm-9"><input type="date" id="filter-date-before" class="form-control control" title="Find call records before on or before this date" data-bind="value: currentFilter().DateBefore" /></div>
                 </div>
-                @*
-                TODO #11 data-bind="disable: isSearchDisabled"
-                <div class="row">
-                    <div class="col-sm-offset-8 col-sm-4 text-right">
-                        <button type="submit" class="btn btn-xs btn-primary text-right">Search</button>
-                        <button data-bind="click: resetSearch" class="btn btn-xs btn-primary text-right"><span class="glyphicon-"></span>Reset</button>
-                        <button data-bind="click: saveSearch" class="btn btn-xs btn-primary text-right">Save</button>
-                        <button data-bind="click: deleteSearch" class="btn btn-xs btn-primary text-right">Delete</button>
-                    </div>
-                </div>
-                *@
             </form>
             <div class="text-right">
                 <div class="btn-group btn-group-sm" role="group" aria-label="Actions">
                     <button data-bind="click: searchCallList" class="btn btn-primary" title="Search the call list">Search</button>
                     <button data-bind="click: resetSearch" class="btn btn-warning" title="Reset the search form">Reset</button>
 
+                    @*
                     <div class="btn-group btn-group-sm text-left" role="group">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Actions
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu">
-                            <li><a href="#" data-bind="click: saveSearch" title="Save this filter">Save</a></li>
-                            <li><a href="#" data-bind="visible: currentFilter().id, click: deleteSearch" title="Delete this filter">Delete</a></li>
+                            <li><a href="#" data-bind="click: saveSavedFilter" title="Save this filter">Save</a></li>
+                            <li><a href="#" data-bind="visible: currentFilter().ID, click: renameSavedFilter" title="Save this search">Save</a></li>
+                            <li><a href="#" data-bind="visible: currentFilter().ID, click: deleteSavedFilter" title="Delete this saved search">Delete</a></li>
                         </ul>
-                    </div>
+                    </div> 
+                    *@
                 </div>
-                @*
-                
-                <button data-bind="click: saveSearch" class="btn btn-xs btn-primary text-right">Save</button>
-                <button data-bind="click: deleteSearch" class="btn btn-xs btn-danger text-right">Delete</button>
-                *@
             </div>
         </div>
     </div>
