@@ -76,7 +76,6 @@
             }
 
             var updateSavedFilters = function () {
-                console.log("updating saved filters %o", CallFiltersViewModel.savedFilters());
                 // update load search dropdown filter.Name property
                 var filters = $.map(CallFiltersViewModel.savedFilters(), function (currentFilter) {
                     if (filter.ID == currentFilter.ID) {
@@ -84,8 +83,11 @@
                     }
                     return currentFilter;
                 });
-                console.log("updated saved filters %o", filters);
+
+                // this isnt working
+                /*CallFiltersViewModel.savedFilters.removeAll();
                 CallFiltersViewModel.savedFilters(filters);
+                CallFiltersViewModel.selectedSavedFilter(CallFiltersViewModel.currentFilter());*/
             };
 
             if (filter.ID > 0) {
@@ -109,7 +111,18 @@
         deleteSavedFilter: function() {
             // #26 todo turn into modal
             if (confirm('Are you sure you wish to delete this filter?')) {
-                this.savedFilters.remove(CallFiltersViewModel.currentFilter());
+                var self = this;
+                var filter = this.currentFilter();
+                $.ajax({
+                    url: '/api/SavedFilters/' + filter.ID,
+                    type: 'DELETE',
+                    contentType: 'application/json'
+                })
+                .success(function () {
+                    self.savedFilters.remove(filter);
+                    self.resetSelectedSavedFilter();
+                    self.currentFilter({});
+                });
             }
         }
     };
