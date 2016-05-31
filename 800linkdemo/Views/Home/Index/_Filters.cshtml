@@ -22,14 +22,14 @@
         <div class="panel-heading">Filter Search</div>
         <div class="panel-body">
             @* 
-            revisit this after i get currentFilter able to remove the mask in a better way
+            todo: possibly revisit this after i get currentFilter able to remove the mask in a better way
             , event: { change: searchCallList, blur: searchCallList }
             *@
             <form id="filter-form" class="form-horizontal" data-bind="submit: searchCallList">
                 <div class="row" data-bind="visible: hasSavedFilters">
                     <div class="col-sm-2 "><label for="load-search" class="control-label">Load Search</label></div>
                     <div class="col-sm-7"><select id="load-search" class="form-control" data-bind="options: savedFilters, optionsText: function(filter) { return filter.Name; }, value: selectedSavedFilter, optionsCaption: 'Choose a filter&hellip;'"></select></div>
-                    <div class="col-sm-3 text-right">
+                    <div class="col-sm-3">
                         <div class="btn-group btn-group-sm text-left" role="group">
                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Actions

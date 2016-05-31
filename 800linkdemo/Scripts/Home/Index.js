@@ -51,11 +51,14 @@
                 CallsListViewModel.fetchData(filter);
             }
         },
-        loadSavedFilters: function() {
+        loadSavedFilters: function(selectedID) {
             $.get("/api/SavedFilters")
             .success(function (data, status) {
                 if (data && $.isArray(data)) { 
                     CallFiltersViewModel.savedFilters(data);
+                    if (selectedID && selectedID > 0) {
+                        CallFiltersViewModel.selectedSavedFilter(CallFiltersViewModel.currentFilter());
+                    }
                 }
             });
         }, 
@@ -66,49 +69,49 @@
         },
         saveSavedFilter: function() {
             // #5
-            var filter = this.currentFilter();
-            var jsonFilter = JSON.stringify(filter);
+            var self = this;
+            var currentFilter = this.currentFilter();
 
             // validate that we have a name and possibly some sort of data
-            if (!filter.Name || !filter.Name.length) {
+            if (!currentFilter.Name || !currentFilter.Name.length) {
                 CallDemo.displayError('Please provide a name before saving');
                 return false;
             }
 
-            var updateSavedFilters = function () {
-                // update load search dropdown filter.Name property
-                var filters = $.map(CallFiltersViewModel.savedFilters(), function (currentFilter) {
-                    if (filter.ID == currentFilter.ID) {
-                        return filter;
-                    }
-                    return currentFilter;
-                });
-
-                // update the loadedSavedFilters observabl with our new value this isnt working
-                /*CallFiltersViewModel.savedFilters.removeAll();
-                CallFiltersViewModel.savedFilters(filters);
-                CallFiltersViewModel.selectedSavedFilter(CallFiltersViewModel.currentFilter());*/
-            };
-
-            if (filter.ID > 0) {
-                $.ajax({
-                    url: '/api/SavedFilters/' + filter.ID, jsonFilter,
+            if (currentFilter.ID > 0) {
+                // update an existing search filter record and load search dropdown name field
+                var promise = $.ajax({
+                    url: '/api/SavedFilters/' + currentFilter.ID,
                     type: 'PUT',
-                    data: jsonFilter,
-                    contentType: 'application/json',
-                    success: function () {
-                        updateSavedFilters()
-                        CallFiltersViewModel.currentFilter(arguments[0]);
-                    }
-                    /*
-                    error: function (jqXHR) {
-                        // could do custom error handling here to show the server side validation failures from the ModelState
-                    }
-                    */
+                    data: JSON.stringify(currentFilter)
+                    /* error: function (jqXHR) { ... custom error handling ...  } */
+                })
+                .success(function () {
+                    // POST will update the record and does not return content. all we need to do is 
+                    // update the savedFilters currentFilter.Name property
+                    var filters = $.map(self.savedFilters(), function (savedFilter) {
+                        if (savedFilter.ID == currentFilter.ID) {
+                            return currentFilter;
+                        }
+                        return savedFilter;
+                    });
+
+                    self.savedFilters.removeAll();
+                    self.savedFilters(filters);
+                    self.selectedSavedFilter(currentFilter);
+                    self.showSavedFilterName(true);
                 });
             } else {
-                $.post('/api/SavedFilters', jsonFilter)
-                    .success(updateSavedFilters);
+                // create a new saved search filter record and update the load search dropdown
+                $.post('/api/SavedFilters', JSON.stringify(currentFilter))
+                    .success(function (response) {
+                        if (response && response.ID) {
+                            currentFilter = response;
+                            self.savedFilters.push(currentFilter);
+                            self.selectedSavedFilter(currentFilter);
+                            self.showSavedFilterName(true);
+                        }
+                    });
             }
         },
         deleteSavedFilter: function() {
@@ -118,13 +121,13 @@
                 var filter = this.currentFilter();
                 $.ajax({
                     url: '/api/SavedFilters/' + filter.ID,
-                    type: 'DELETE',
-                    contentType: 'application/json'
+                    type: 'DELETE'
                 })
                 .success(function () {
                     self.savedFilters.remove(filter);
                     self.resetSelectedSavedFilter();
                     self.currentFilter({});
+                    // TODO - refresh grid since filter isn't applied anymore
                 });
             }
         }
@@ -137,9 +140,7 @@
     todo - hide Save button if we can't save a filter
     CallFiltersViewModel.canSaveSavedFilter = ko.computed(function() {
         var filter = this.currentFilter();
-        var result =  (filter.ID > 0 || (filter.Name && filter.Name.length))
-            ? true : false;
-        return result;
+        return (filter.ID > 0 || (filter.Name && filter.Name.length)) ? true : false;
     }, CallFiltersViewModel),*/
 
     CallFiltersViewModel.selectedSavedFilter.subscribe(function (newFilter) {
@@ -151,14 +152,29 @@
             if (newFilter.DateBefore) newFilter.DateBefore = moment(newFilter.DateBefore).utc().format('YYYY-MM-DD');
             
             CallFiltersViewModel.currentFilter(newFilter);
+            CallsListViewModel.refresh();
         } else {
+            var refresh = false;
             // it might be better to not clear the entire thing and only get rid of the ID field 
+            /*
+            var filter = CallFiltersViewModel.currentFilter();
+            if (filter.ID) {
+                filter.ID = 0;
+                refresh = true;
+            }
+
+            if (refresh) {
+                CallsListViewModel.refresh();
+            }
+            */
+
             CallFiltersViewModel.currentFilter({});
+            if (CallsListViewModel && CallsListViewModel.refresh && $.isFunction(CallsListViewModel.refresh)) {
+                CallsListViewModel.refresh();
+            }
         }
     });
-    CallFiltersViewModel.selectedSavedFilter.extend({
-        notify: 'always'
-    });
+    CallFiltersViewModel.selectedSavedFilter.extend({ notify: 'always' });
 
     CallFiltersViewModel.currentFilter.subscribe(function (filterValue) {
         if (filterValue && filterValue.ID) {
@@ -171,11 +187,12 @@
 
     CallFiltersViewModel.showDeleteSavedFilter = ko.computed(function () {
         var filter = CallFiltersViewModel.currentFilter();
-        return (filter.ID && filter.ID > 0) ? true : false;
+        return (filter && filter.ID && filter.ID > 0) ? true : false;
     }, CallFiltersViewModel);
 
     ko.applyBindings(CallFiltersViewModel, document.getElementById('call-filters'));
     CallFiltersViewModel.loadSavedFilters();
+
 
     // powers the calls list grid
     // might be time to turn this into a function so i can mess with the prototype instead of the hasCalls stuff below
