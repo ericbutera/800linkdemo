@@ -38,6 +38,7 @@
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li><a href="#" data-bind="click: createSavedFilter" title="Create Search">Create</a></li>
                                 <li><a href="#" data-bind="click: saveSavedFilter" title="Save this filter">Save</a></li>
+                                <li><a href="#" data-bind="visible: currentFilter().ID, click: duplicateSavedFilter" title="Duplicate this filter">Duplicate</a></li>
                                 <li><a href="#" data-bind="visible: showDeleteSavedFilter, click: deleteSavedFilter" title="Delete this saved search">Delete</a></li>
                             </ul>
                         </div>

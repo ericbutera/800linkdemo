@@ -130,6 +130,13 @@
                     // #30 TODO - refresh grid since filter isn't applied anymore
                 });
             }
+        },
+        duplicateSavedFilter: function () {
+            var duplicatedFilter = $.extend(true, {}, this.currentFilter());
+            duplicatedFilter.ID = 0;
+            duplicatedFilter.Name = duplicatedFilter.Name + ' Duplicated';
+            this.currentFilter(duplicatedFilter);
+            this.saveSavedFilter();
         }
     };
     CallFiltersViewModel.hasSavedFilters = ko.computed(function () {
