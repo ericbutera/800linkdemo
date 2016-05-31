@@ -1,9 +1,9 @@
-Demo Project
+# Demo Project
 ------------
 
-# Requirements
-Create a system to create custom search filters against a database of call records.
-- Ability to create/edit/delete searches
+## Requirements
+### Create a system to create custom search filters against a database of call records.
+- Ability to create/edit/duplicate/delete searches
 - Ability to see results in a grid
 - Demonstrate validation
 - Make sure the user interface behaves in a manner so that elements show/hide or are disabled if not available
@@ -19,10 +19,10 @@ Create a system to create custom search filters against a database of call recor
 - There is a database SQL file in the root /sql/CallLog.sql. It will create a database called CallLog with some sample data
 - I used SQL Server 2014 Express as the database
 
-# Issue Tracking
+## Issue Tracking
 I will be using the Issues tracker to show progress and have something for my commits to go against. I am used to using FogBugz & JIRA so it feels wrong not to have something to put my commits against in case there are issues with the code. This way we can see what the requirement was, what the changes were and possibly where/when the problem happened.
 
-# Skill Levels of tech used in this demo
+## Skill Levels of tech used in this demo
 - Twitter Bootstrap 7/10
 - jQuery 9/10
 - .NET MVC 7/10
